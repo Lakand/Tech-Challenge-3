@@ -1,22 +1,97 @@
-Este projeto teve como objetivo desenvolver um modelo de Machine Learning para prever a rotatividade (churn) de clientes de um banco, a partir de um conjunto de dados com informações demográficas e de conta. A finalidade do modelo é identificar proativamente os clientes com maior risco de encerrar seu relacionamento com a instituição, permitindo que ações de retenção sejam direcionadas de forma mais eficaz.
+# Previsão de Churn de Clientes Bancários - Tech Challenge Fase 3
 
-Após um ciclo completo de análise exploratória, pré-processamento de dados e otimização de hiperparâmetros, o modelo **XGBoost** foi selecionado como a solução mais performática. A performance foi validada rigorosamente com a técnica de Validação Cruzada, garantindo a robustez dos resultados.
+Este projeto foi desenvolvido como solução para o Tech Challenge da Fase 3 do curso de Machine Learning Engineering. O objetivo principal é aplicar um ciclo completo de ciência de dados, desde a análise de um problema de negócio até a implementação de um modelo preditivo em uma aplicação funcional.
 
-### Principais Descobertas e Insights Acionáveis
+## 1. Contexto do Problema
 
-A análise exploratória dos dados revelou padrões de comportamento cruciais para a estratégia de negócio:
+A rotatividade de clientes, conhecida como **churn**, é um dos desafios mais críticos para instituições financeiras. Perder um cliente não significa apenas a perda de receita recorrente, mas também implica em custos adicionais para adquirir novos clientes, que são significativamente mais altos do que os custos para reter os existentes.
 
-* **O "Ponto Ideal" de Produtos:** A relação entre o número de produtos e o churn não é linear. Clientes com **2 produtos** são os mais fiéis (taxa de churn de apenas 7,6%), mas a taxa salta para alarmantes **82,7%** para clientes com **3 produtos**, indicando uma grave falha na jornada ou oferta para este segmento.
+Neste cenário, o desafio é desenvolver um modelo de Machine Learning capaz de **identificar proativamente os clientes com maior risco de encerrar seu relacionamento com o banco**. Com essa capacidade preditiva, a instituição pode direcionar ações de retenção de forma mais eficaz e personalizada, otimizando recursos e minimizando a perda de receita.
 
-* **A Inatividade como Sinal de Alerta:** Clientes classificados como inativos (`IsActiveMember = 0`) têm quase o **dobro da probabilidade de sair** (churn de 26,9%) em comparação com os clientes ativos (14,3%). Isso posiciona a inatividade como um forte indicador preditivo e uma oportunidade para campanhas de reengajamento.
+## 2. Análise Exploratória e Principais Insights de Negócio
 
-* **Fator Idade:** O risco de churn aumenta com a idade, sendo mais concentrado na faixa entre **40 e 50 anos**, em contraste com os clientes mais leais, que se concentram na faixa dos 30 aos 40 anos.
+Antes da modelagem, foi realizada uma Análise Exploratória de Dados (EDA) para compreender o comportamento dos clientes e identificar os principais fatores que influenciam a decisão de churn. As descobertas mais relevantes foram:
 
-### Performance e Valor de Negócio do Modelo Final
+* **O "Ponto Ideal" de Produtos:** A relação entre o número de produtos que um cliente possui e a taxa de churn não é linear. Clientes com **2 produtos** são os mais fiéis (taxa de churn de apenas 7,6%), mas a taxa salta para alarmantes **82,7%** para clientes com **3 produtos**. Isso sugere uma possível falha na oferta ou na jornada do cliente para este segmento específico, tornando-o um alvo prioritário para investigação.
 
-O modelo XGBoost final demonstrou uma performance sólida e estável, com as seguintes métricas médias obtidas na validação cruzada:
+* **A Inatividade como Sinal de Alerta:** Clientes classificados como inativos (`IsActiveMember = 0`) têm quase o **dobro da probabilidade de sair** (churn de 26,9%) em comparação com os clientes ativos (14,3%). A inatividade é, portanto, um forte indicador preditivo e uma oportunidade clara para campanhas de reengajamento.
 
-* **ROC AUC de 0.85:** Excelente capacidade de distinguir entre clientes que irão ou não evadir.
-* **F1-Score (Churn) de 0.60:** Bom equilíbrio entre precisão e revocação para a classe de interesse.
+* **Fator Idade:** O risco de churn tende a aumentar com a idade, concentrando-se na faixa entre **40 e 50 anos**. Em contrapartida, os clientes mais leais estão na faixa dos 30 aos 40 anos, indicando diferentes ciclos de vida e necessidades financeiras.
 
-Em termos de negócio, isso significa que o modelo é capaz de **identificar corretamente mais da metade (54%)** dos clientes que realmente iriam sair e, quando sinaliza um cliente como risco, ele está **correto em 2 de cada 3 casos (67%)**. Este nível de performance torna o modelo uma ferramenta valiosa e acionável para otimizar os esforços de retenção e minimizar a perda de receita.
+## 3. Pré-processamento dos Dados
+
+Para preparar os dados para os algoritmos de Machine Learning, foram aplicadas as seguintes técnicas:
+
+1.  **Transformação de Features Categóricas:** Variáveis como `Geography`, `Gender` e `Card Type` foram convertidas para um formato numérico utilizando `OneHotEncoder`.
+2.  **Padronização de Features Numéricas:** Todas as variáveis numéricas foram normalizadas com `StandardScaler` para que tivessem a mesma escala, evitando que features com valores maiores dominassem o modelo.
+3.  **Tratamento de Desbalanceamento de Classe:** O conjunto de dados original é desbalanceado (cerca de 80% de não-churn e 20% de churn). Para evitar que o modelo se tornasse enviesado para a classe majoritária, a técnica **SMOTE (Synthetic Minority Over-sampling Technique)** foi aplicada *apenas no conjunto de treino* para criar exemplos sintéticos da classe minoritária e balancear os dados.
+
+A aplicação do SMOTE após a divisão treino-teste foi uma decisão metodológica crucial para evitar o vazamento de dados (*data leakage*) e garantir que a avaliação do modelo fosse realista.
+
+## 4. Modelagem e Performance
+
+Foram testados cinco algoritmos de classificação diferentes para identificar a solução mais performática: Regressão Logística, Random Forest, XGBoost, SVM e MLP.
+
+Após uma rodada de otimização de hiperparâmetros com `RandomizedSearchCV`, o modelo **XGBoost** foi selecionado como a solução final por apresentar o melhor equilíbrio entre as métricas de avaliação.
+
+A performance do modelo final foi rigorosamente validada com a técnica de **Validação Cruzada Estratificada com 10 folds**, garantindo a robustez e a estabilidade dos resultados. As métricas médias obtidas foram:
+
+* **ROC AUC de 0.856:** Excelente capacidade de distinguir entre clientes que irão ou não evadir.
+* **F1-Score (para a classe Churn) de 0.603:** Ótimo equilíbrio entre precisão e revocação, sendo a principal métrica de otimização para problemas desbalanceados.
+* **Precisão (para a classe Churn) de 0.664:** Quando o modelo prevê que um cliente sairá, ele está correto em 2 de cada 3 casos.
+* **Revocação (para a classe Churn) de 0.553:** O modelo é capaz de identificar corretamente mais da metade dos clientes que realmente iriam sair.
+
+Em termos de negócio, o F1-Score e a Revocação demonstram que o modelo é uma ferramenta valiosa e acionável para otimizar os esforços de retenção e minimizar a perda de receita.
+
+## 5. Produtização com Streamlit
+
+Para demonstrar a aplicabilidade prática do modelo, foi desenvolvida uma aplicação web simples utilizando a biblioteca **Streamlit**.
+
+A aplicação permite que um usuário:
+1.  Insira os dados de um cliente através de um formulário interativo.
+2.  Submeta os dados para o modelo treinado (`modelo_churn_xgb.pkl`).
+3.  Receba em tempo real a previsão da probabilidade de churn, com uma indicação clara de "ALTO RISCO" ou "BAIXO RISCO".
+
+Esta aplicação serve como um protótipo funcional de como o modelo de Machine Learning pode ser integrado a uma ferramenta de negócios para auxiliar na tomada de decisão.
+
+## 6. Como Executar o Projeto Localmente
+
+Para executar a aplicação Streamlit em sua máquina, siga os passos abaixo.
+
+### Pré-requisitos
+* Python 3.8+
+* Git
+
+### Passos
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone <URL_DO_SEU_REPOSITORIO_AQUI>
+    cd <NOME_DA_PASTA_DO_REPOSITORIO>
+    ```
+
+2.  **Crie e ative um ambiente virtual (recomendado):**
+    ```bash
+    # Para Windows
+    python -m venv venv
+    .\venv\Scripts\activate
+
+    # Para macOS/Linux
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+
+3.  **Instale as dependências:**
+    O projeto utiliza as bibliotecas listadas no arquivo `requirements.txt`. Instale-as com o seguinte comando:
+    ```bash
+    pip install -r requirements.txt
+    ```
+   
+
+4.  **Execute a aplicação Streamlit:**
+    Após a instalação, execute o comando abaixo no seu terminal:
+    ```bash
+    streamlit run app.py
+    ```
+
+5.  A aplicação será aberta automaticamente no seu navegador padrão.
