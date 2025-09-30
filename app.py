@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# --- 1. CARREGAMENTO DO MODELO (mantido como estava, ótima prática!) ---
+# --- CARREGAMENTO DO MODELO ---
+# Usar cache para carregar o modelo apenas uma vez e otimizar a performance
 @st.cache_resource
 def load_model():
     """Carrega o pipeline de machine learning do arquivo .pkl"""
@@ -12,7 +13,7 @@ def load_model():
 pipeline_churn = load_model()
 
 
-# --- 2. MELHORIA NA INTERFACE: TÍTULO E INTRODUÇÃO ---
+# --- INTERFACE DO USUÁRIO ---
 st.title('Sistema de Previsão de Churn de Clientes')
 st.markdown("""
     Esta aplicação utiliza um modelo de Machine Learning (XGBoost) para prever a probabilidade 
@@ -23,7 +24,7 @@ st.markdown("""
 st.divider()
 
 
-# --- 3. MELHORIA NA ORGANIZAÇÃO: USO DE EXPANDERS PARA OS INPUTS ---
+# --- COLETA DOS DADOS DE ENTRADA ---
 col1, col2 = st.columns(2)
 
 with col1:
@@ -52,7 +53,7 @@ with st.expander("Informações Adicionais de Engajamento"):
         point_earned = st.number_input('Pontos Ganhos (Programa de Fidelidade)', min_value=0, value=500)
 
 
-# --- Botão para realizar a previsão ---
+# --- EXECUÇÃO E EXIBIÇÃO DA PREVISÃO ---
 if st.button('Prever Churn', type="primary"):
     # Criar DataFrame com os dados de entrada
     input_data = pd.DataFrame({
@@ -71,13 +72,13 @@ if st.button('Prever Churn', type="primary"):
         'Point Earned': [point_earned]
     })
 
-    # Fazer a predição da probabilidade
+  
     probabilidade_churn = pipeline_churn.predict_proba(input_data)[:, 1][0]
     
     st.divider()
     st.subheader('Resultado da Previsão:')
     
-    # --- 4. MELHORIA NO FEEDBACK AO USUÁRIO ---
+
     if probabilidade_churn > 0.5:
         st.error(f'ALTO RISCO DE CHURN: {probabilidade_churn:.2%} de probabilidade')
         st.warning('**Recomendação de Ação:** Este cliente possui um perfil com alta propensão a deixar o banco. Recomenda-se que a equipe de retenção entre em contato para oferecer benefícios, entender suas necessidades ou resolver possíveis problemas.')
