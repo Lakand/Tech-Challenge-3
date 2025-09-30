@@ -1,0 +1,19 @@
+# Ambiente Virtual
+venv/
+*.env
+
+# Arquivos de Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Pastas de IDEs (como VS Code)
+.vscode/
+.idea/
+
+# Arquivos de Dados Grandes (melhor fornecer o link no README)
+*.csv
+
+# Arquivos temporários/pessoais
+fazer.txt
