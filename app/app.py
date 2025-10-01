@@ -31,18 +31,13 @@ def main():
 
     # --- Interface e Lógica de Predição ---
     if pipeline:
-        # Constrói a UI com colunas e obtém os dados inseridos
         user_input = get_user_input()
         
         st.divider()
 
-        # Botão para acionar a predição
         if st.button('Analisar Cliente', type="primary", use_container_width=True):
             with st.spinner('Realizando a previsão...'):
-                # Realiza a predição
                 probabilidade = predict(pipeline, user_input)
-                
-                # Exibe o resultado
                 display_prediction(probabilidade)
     else:
         st.warning("O modelo não pôde ser carregado. A aplicação não pode continuar.")
