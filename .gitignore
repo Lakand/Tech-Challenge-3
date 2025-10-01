@@ -12,8 +12,5 @@ __pycache__/
 .vscode/
 .idea/
 
-# Arquivos de Dados Grandes (melhor fornecer o link no README)
-*.csv
-
 # Arquivos temporários/pessoais
 fazer.txt
