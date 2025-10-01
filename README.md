@@ -8,7 +8,20 @@ A rotatividade de clientes, conhecida como **churn**, é um dos desafios mais cr
 
 Neste cenário, o desafio é desenvolver um modelo de Machine Learning capaz de **identificar proativamente os clientes com maior risco de encerrar seu relacionamento com o banco**. Com essa capacidade preditiva, a instituição pode direcionar ações de retenção de forma mais eficaz e personalizada, otimizando recursos e minimizando a perda de receita.
 
-## 2. Análise Exploratória e Principais Insights de Negócio
+## 2. Fonte dos Dados
+
+O conjunto de dados utilizado neste projeto é o "Bank Customer Churn Prediction" e foi obtido através da plataforma Kaggle. Ele contém informações demográficas e de conta de clientes de um banco, sendo ideal para a modelagem de previsão de rotatividade.
+
+- **Link para o Dataset:** [https://www.kaggle.com/datasets/radheshyamkollipara/bank-customer-churn/data](https://www.kaggle.com/datasets/radheshyamkollipara/bank-customer-churn/data)
+
+## 3. Estrutura do Projeto
+O projeto foi organizado de forma modular para garantir clareza, manutenibilidade e escalabilidade:
+* `/app`: Contém todo o código-fonte da aplicação Streamlit, separado em módulos para a interface (`ui.py`) e para a lógica de predição (`prediction.py`).
+* `/data`: Armazena o conjunto de dados brutos utilizado na análise e no treinamento.
+* `tech_challenge_3.ipynb`: Notebook Jupyter com toda a análise exploratória, pré-processamento e o processo de modelagem.
+* `modelo_churn_xgb.pkl`: Artefato do modelo treinado e pronto para ser consumido pela aplicação.
+
+## 4. Análise Exploratória e Principais Insights de Negócio
 
 Antes da modelagem, foi realizada uma Análise Exploratória de Dados (EDA) para compreender o comportamento dos clientes e identificar os principais fatores que influenciam a decisão de churn. As descobertas mais relevantes foram:
 
@@ -18,7 +31,7 @@ Antes da modelagem, foi realizada uma Análise Exploratória de Dados (EDA) para
 
 * **Fator Idade:** O risco de churn tende a aumentar com a idade, concentrando-se na faixa entre **40 e 50 anos**. Em contrapartida, os clientes mais leais estão na faixa dos 30 aos 40 anos, indicando diferentes ciclos de vida e necessidades financeiras.
 
-## 3. Pré-processamento dos Dados
+## 5. Pré-processamento dos Dados
 
 Para preparar os dados para os algoritmos de Machine Learning, foram aplicadas as seguintes técnicas:
 
@@ -28,7 +41,7 @@ Para preparar os dados para os algoritmos de Machine Learning, foram aplicadas a
 
 A aplicação do SMOTE após a divisão treino-teste foi uma decisão metodológica crucial para evitar o vazamento de dados (*data leakage*) e garantir que a avaliação do modelo fosse realista.
 
-## 4. Modelagem e Performance
+## 6. Modelagem e Performance
 
 Foram testados cinco algoritmos de classificação diferentes para identificar a solução mais performática: Regressão Logística, Random Forest, XGBoost, SVM e MLP.
 
@@ -43,7 +56,7 @@ A performance do modelo final foi rigorosamente validada com a técnica de **Val
 
 Em termos de negócio, o F1-Score e a Revocação demonstram que o modelo é uma ferramenta valiosa e acionável para otimizar os esforços de retenção e minimizar a perda de receita.
 
-## 5. Produtização com Streamlit
+## 7. Produtização com Streamlit
 
 Para demonstrar a aplicabilidade prática do modelo, foi desenvolvida uma aplicação web simples utilizando a biblioteca **Streamlit**.
 
@@ -54,7 +67,16 @@ A aplicação permite que um usuário:
 
 Esta aplicação serve como um protótipo funcional de como o modelo de Machine Learning pode ser integrado a uma ferramenta de negócios para auxiliar na tomada de decisão.
 
-## 6. Como Executar o Projeto Localmente
+## 8. Tecnologias Utilizadas
+
+-   **Linguagem:** Python 3
+-   **Análise e Modelagem:** Pandas, Scikit-learn, XGBoost, Imbalanced-learn, Joblib
+-   **Visualização de Dados:** Matplotlib, Seaborn
+-   **Aplicação Web (Dashboard):** Streamlit
+-   **Ambiente e Versionamento:** Jupyter Notebook, Git
+
+
+## 9. Como Executar o Projeto Localmente
 
 Para executar a aplicação Streamlit em sua máquina, siga os passos abaixo.
 
@@ -89,9 +111,9 @@ Para executar a aplicação Streamlit em sua máquina, siga os passos abaixo.
    
 
 4.  **Execute a aplicação Streamlit:**
-    Após a instalação, execute o comando abaixo no seu terminal:
+    Após a instalação, execute o comando abaixo no seu terminal (lembre-se de estar na pasta raiz do projeto):
     ```bash
-    streamlit run app.py
+    streamlit run app/app.py
     ```
 
 5.  A aplicação será aberta automaticamente no seu navegador padrão.
