@@ -27,7 +27,7 @@ Antes da modelagem, foi realizada uma Análise Exploratória de Dados (EDA) para
 
 * **O "Ponto Ideal" de Produtos:** A relação entre o número de produtos que um cliente possui e a taxa de churn não é linear. Clientes com **2 produtos** são os mais fiéis (taxa de churn de apenas 7,6%), mas a taxa salta para alarmantes **82,7%** para clientes com **3 produtos**. Isso sugere uma possível falha na oferta ou na jornada do cliente para este segmento específico, tornando-o um alvo prioritário para investigação.
 
-* **A Inatividade como Sinal de Alerta:** Clientes classificados como inativos (`IsActiveMember = 0`) têm quase o **dobro da probabilidade de sair** (churn de 26,9%) em comparação com os clientes ativos (14,3%). A inatividade é, portanto, um forte indicador preditivo e uma oportunidade clara para campanhas de reengajamento.
+* **A Inatividade como Sinal de Alerta:** Clientes classificados como inativos (`IsActiveMember = 0`) têm quase o **dobro da probabilidade de sair** (churn de 26,4%) em comparação com os clientes ativos (13,7%). A inatividade é, portanto, um forte indicador preditivo e uma oportunidade clara para campanhas de reengajamento.
 
 * **Fator Idade:** O risco de churn tende a aumentar com a idade, concentrando-se na faixa entre **40 e 50 anos**. Em contrapartida, os clientes mais leais estão na faixa dos 30 aos 40 anos, indicando diferentes ciclos de vida e necessidades financeiras.
 
